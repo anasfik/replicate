@@ -1,6 +1,10 @@
 class HeaderBuilder {
   static String? _internalApiKey;
 
+  static set apiKey(String apiKey) {
+    _internalApiKey = apiKey;
+  }
+
   static Map<String, String> build([bool includeContentType = false]) {
     final Map<String, String> map = {};
 

@@ -8,7 +8,7 @@ import '../utils/logger.dart';
 import 'package:http/http.dart' as http;
 
 class ReplicateHttpClient {
-  Future<T> get<T>({
+  static Future<T> get<T>({
     required T Function(Map<String, dynamic>) onSuccess,
     required String from,
   }) async {
@@ -28,7 +28,7 @@ class ReplicateHttpClient {
     }
   }
 
-  Future<T> post<T>({
+  static Future<T> post<T>({
     required T Function(Map<String, dynamic>) onSuccess,
     required String to,
     required Map<String, dynamic> body,
@@ -36,13 +36,13 @@ class ReplicateHttpClient {
     ReplicateLogger.logRequestStart(to);
     final response = await http.post(
       Uri.parse(to),
-      headers: HeaderBuilder.build(),
+      headers: HeaderBuilder.build(true),
       body: jsonEncode(body),
     );
     ReplicateLogger.logRequestEnd(to);
     final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
     final error = decodedBody["error"];
-    if (error != null) {
+    if (error == null) {
       return onSuccess(decodedBody);
     } else {
       throw ReplicateException(message: error, statsCode: response.statusCode);

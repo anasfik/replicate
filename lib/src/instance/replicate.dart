@@ -1,6 +1,7 @@
 import 'package:replicate/src/instance/models/models.dart';
 
 import '../exceptions/missing_api_key_exception.dart';
+import '../network/builder/headers.dart';
 import '../utils/logger.dart';
 import 'predictions/predictions.dart';
 
@@ -15,12 +16,13 @@ class Replicate {
   /// ```
   static set apiKey(String apiKey) {
     _internalApiKey = apiKey;
+    HeaderBuilder.apiKey = apiKey;
   }
 
   /// This is the only allowed instance to be created by the [Replicate] class.
   /// You can access it with the public [instance] getter.
   static final Replicate _instance = Replicate._();
-  static get instance {
+  static Replicate get instance {
     if (_internalApiKey == null) {
       throw MissingApiKeyException("""
       You must set the api key before accessing the instance of this class.

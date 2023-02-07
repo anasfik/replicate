@@ -1,3 +1,7 @@
+import 'package:replicate/src/models/predictions/prediction.dart';
+import 'package:replicate/src/network/builder/endpoint_url.dart';
+import 'package:replicate/src/network/http_client.dart';
+
 import '../../base/predictions_base.dart';
 
 class ReplicatePrediction implements ReplicatePredictionBase {
@@ -10,12 +14,22 @@ class ReplicatePrediction implements ReplicatePredictionBase {
   }
 
   @override
-  Future create({
+  Future<Prediction> create({
     required String version,
     required Map<String, dynamic> input,
+    String? webhookCompleted,
   }) {
-    // TODO: implement create
-    throw UnimplementedError();
+    return ReplicateHttpClient.post(
+      to: EndpointUrlBuilder.build(['predictions']),
+      body: {
+        'version': version,
+        'input': input,
+        if (webhookCompleted != null) "webhook_completed": webhookCompleted,
+      },
+      onSuccess: (Map<String, dynamic> response) {
+        return Prediction.fromJson(response);
+      },
+    );
   }
 
   @override

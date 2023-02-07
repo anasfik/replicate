@@ -1,3 +1,5 @@
+import 'package:replicate/src/instance/models/models.dart';
+
 import '../exceptions/missing_api_key_exception.dart';
 import 'predictions/predictions.dart';
 
@@ -36,12 +38,18 @@ class Replicate {
   /// ```
   static set showLogs(bool newValue) {}
 
-  /// This is the responsible member of the Replicate's predictions, where you can call the methods to create, get, list and cancel predictions.
+  /// This is the responsible member of the Replicate's predictions API, where you can call the methods to create, get, list and cancel predictions.
   /// Example:
   /// ```dart
-  /// Replicate.instance.predictions.create(...)
-  ReplicatePrediction predictions() => ReplicatePrediction();
+  /// Replicate.instance.predictions;
+  ReplicatePrediction get predictions => ReplicatePrediction();
 
+  /// This id the responsible member of the Replicate's models API, where you can call the methods to get version(s), delete, get a collection of models.
+  /// Example:
+  /// ```dart
+  ///Replicate.instance.models;
+  /// ```
+  ReplicateModels get models => ReplicateModels();
   // A private constructor. Allows us to create instance of Replicate only from within the Replicate class itself.
   Replicate._();
 }

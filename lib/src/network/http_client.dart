@@ -27,4 +27,25 @@ class ReplicateHttpClient {
       throw ReplicateException(message: error, statsCode: response.statusCode);
     }
   }
+
+  Future<T> post<T>({
+    required T Function(Map<String, dynamic>) onSuccess,
+    required String to,
+    required Map<String, dynamic> body,
+  }) async {
+    ReplicateLogger.logRequestStart(to);
+    final response = await http.post(
+      Uri.parse(to),
+      headers: HeaderBuilder.build(),
+      body: jsonEncode(body),
+    );
+    ReplicateLogger.logRequestEnd(to);
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    final error = decodedBody["error"];
+    if (error != null) {
+      return onSuccess(decodedBody);
+    } else {
+      throw ReplicateException(message: error, statsCode: response.statusCode);
+    }
+  }
 }

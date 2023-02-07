@@ -1,6 +1,7 @@
 import 'package:replicate/src/instance/models/models.dart';
 
 import '../exceptions/missing_api_key_exception.dart';
+import '../utils/logger.dart';
 import 'predictions/predictions.dart';
 
 class Replicate {
@@ -36,7 +37,9 @@ class Replicate {
   /// ```dart
   /// Replicate.showLogs = false
   /// ```
-  static set showLogs(bool newValue) {}
+  static set showLogs(bool newValue) {
+    ReplicateLogger.isActive = newValue;
+  }
 
   /// This is the responsible member of the Replicate's predictions API, where you can call the methods to create, get, list and cancel predictions.
   /// Example:

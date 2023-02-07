@@ -14,7 +14,7 @@ class Prediction {
   final DateTime? completedAt;
   final String status;
   final Map<String, dynamic> input;
-  final List? output;
+  final dynamic output;
   final String? error;
   final String logs;
   final Map<String, dynamic>? metrics;

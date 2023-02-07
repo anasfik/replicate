@@ -21,7 +21,7 @@ class ReplicateHttpClient {
 
     final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
     final error = decodedBody["error"];
-    if (error != null) {
+    if (error == null) {
       return onSuccess(decodedBody);
     } else {
       throw ReplicateException(message: error, statsCode: response.statusCode);
@@ -31,7 +31,7 @@ class ReplicateHttpClient {
   static Future<T> post<T>({
     required T Function(Map<String, dynamic>) onSuccess,
     required String to,
-    required Map<String, dynamic> body,
+    Map<String, dynamic>? body,
   }) async {
     ReplicateLogger.logRequestStart(to);
     final response = await http.post(

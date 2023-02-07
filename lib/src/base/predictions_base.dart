@@ -1,3 +1,5 @@
+import '../../replicate.dart';
+
 abstract class ReplicatePredictionBase
     implements
         CreatePrediction,
@@ -26,7 +28,7 @@ abstract class GetPrediction {
 }
 
 abstract class ListPredictions {
-  Future<List> list();
+  Future<PredictionsPagination> list();
 }
 
 abstract class CreatePrediction {

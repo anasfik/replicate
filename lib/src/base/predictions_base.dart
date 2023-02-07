@@ -9,9 +9,8 @@ abstract class ReplicatePredictionBase
         CancelPrediction {}
 
 abstract class CreatePredictionStream {
-  Stream createWithStream({
-    required String version,
-    required Map<String, dynamic> input,
+  Stream<Prediction> snapshots({
+    required String id,
   });
 }
 
@@ -22,7 +21,7 @@ abstract class CancelPrediction {
 }
 
 abstract class GetPrediction {
-  Future get({
+  Future<Prediction> get({
     required String id,
   });
 }
@@ -32,7 +31,7 @@ abstract class ListPredictions {
 }
 
 abstract class CreatePrediction {
-  Future create({
+  Future<Prediction> create({
     required String version,
     required Map<String, dynamic> input,
   });

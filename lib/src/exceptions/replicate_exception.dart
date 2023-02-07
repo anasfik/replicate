@@ -6,4 +6,9 @@ class ReplicateException implements Exception {
     required this.message,
     required this.statsCode,
   });
+
+  @override
+  String toString() {
+    return 'ReplicateException(message: $message, statsCode: $statsCode)';
+  }
 }

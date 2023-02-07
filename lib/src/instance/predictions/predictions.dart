@@ -1,4 +1,5 @@
 import 'package:meta/meta.dart';
+import 'package:replicate/src/instance/predictions/stream/predictions.dart';
 import 'package:replicate/src/models/predictions/prediction.dart';
 import 'package:replicate/src/network/builder/endpoint_url.dart';
 import 'package:replicate/src/network/http_client.dart';
@@ -39,7 +40,7 @@ class ReplicatePrediction implements ReplicatePredictionBase {
   }
 
   @override
-  Future get({required String id}) async {
+  Future<Prediction> get({required String id}) async {
     return await ReplicateHttpClient.get(
       from: EndpointUrlBuilder.build(['predictions', id]),
       onSuccess: (Map<String, dynamic> response) {
@@ -67,10 +68,19 @@ class ReplicatePrediction implements ReplicatePredictionBase {
     );
   }
 
+  Map<String, PredictionStream> predictionsStreamRegistry = {};
+
   @override
-  Stream createWithStream(
-      {required String version, required Map<String, dynamic> input}) {
-    // TODO: implement createWithStream
-    throw UnimplementedError();
+  Stream<Prediction> snapshots({
+    required String id,
+  }) {
+    if (predictionsStreamRegistry.containsKey(id)) {
+      return predictionsStreamRegistry[id]!.stream;
+    } else {
+      final predictionStream = PredictionStream();
+
+      predictionsStreamRegistry[id] = predictionStream;
+      return predictionStream.stream;
+    }
   }
 }

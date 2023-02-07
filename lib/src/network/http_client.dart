@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:replicate/replicate.dart';
 import 'package:replicate/src/network/builder/headers.dart';
 
 import '../exceptions/replicate_exception.dart';
@@ -20,8 +21,11 @@ class ReplicateHttpClient {
     ReplicateLogger.logRequestEnd(from);
 
     final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+
     final error = decodedBody["error"];
-    if (error == null) {
+    final detail = decodedBody["detail"];
+
+    if (error == null && detail == null) {
       return onSuccess(decodedBody);
     } else {
       throw ReplicateException(message: error, statsCode: response.statusCode);
@@ -41,11 +45,16 @@ class ReplicateHttpClient {
     );
     ReplicateLogger.logRequestEnd(to);
     final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+
     final error = decodedBody["error"];
-    if (error == null) {
+    final detail = decodedBody["detail"];
+    if (error == null && detail == null) {
       return onSuccess(decodedBody);
     } else {
-      throw ReplicateException(message: error, statsCode: response.statusCode);
+      throw ReplicateException(
+        message: error ?? detail ?? "Unknown error",
+        statsCode: response.statusCode,
+      );
     }
   }
 }

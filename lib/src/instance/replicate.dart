@@ -50,6 +50,7 @@ class Replicate {
   ///Replicate.instance.models;
   /// ```
   ReplicateModels get models => ReplicateModels();
+
   // A private constructor. Allows us to create instance of Replicate only from within the Replicate class itself.
   Replicate._();
 }

@@ -1,3 +1,4 @@
-## 1.0.0
+## 0.2.0
 
-- Initial version.
+- Add predictions methods.
+- Add stream predictions methods.

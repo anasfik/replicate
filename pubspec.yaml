@@ -1,5 +1,5 @@
 name: replicate
-description: A Dart client for Replicate.
+description: Dart client for Replicate.com.
 version: 0.2.0
 
 environment:

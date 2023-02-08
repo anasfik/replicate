@@ -75,6 +75,7 @@ class ReplicatePrediction implements ReplicatePredictionBase {
     required String id,
     Duration pollingInterval = const Duration(seconds: 3),
     bool triggerOnlyStatusChanges = true,
+    bool stopPollingRequestsOnPredictionTermination = true,
   }) {
     if (_predictionsStreamRegistry.containsKey(id)) {
       return _predictionsStreamRegistry[id]!.stream;
@@ -85,6 +86,7 @@ class ReplicatePrediction implements ReplicatePredictionBase {
         },
         pollingInterval: pollingInterval,
         triggerOnlyStatusChanges: triggerOnlyStatusChanges,
+        stopPollingRequestsOnPredictionTermination: stopPollingRequestsOnPredictionTermination,
       );
 
       _predictionsStreamRegistry[id] = predictionStream;

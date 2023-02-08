@@ -26,6 +26,7 @@ class PredictionStream {
     required Future<Prediction> Function() pollingCallback,
     required Duration pollingInterval,
     required bool triggerOnlyStatusChanges,
+    required bool stopPollingRequestsOnPredictionTermination,
   }) {
     timer = Timer.periodic(
       pollingInterval,
@@ -40,6 +41,12 @@ class PredictionStream {
             }
           } else {
             addPrediction(prediction);
+          }
+
+          if (prediction.isTerminated) {
+            if (stopPollingRequestsOnPredictionTermination) {
+              close();
+            }
           }
         } catch (e) {
           addError(e);

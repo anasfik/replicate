@@ -104,7 +104,7 @@ class ReplicatePrediction implements ReplicatePredictionBase {
       pollingInterval: pollingInterval,
       shouldTriggerOnlyStatusChanges: true,
     ).asyncMap<PredictionStatus>((prediction) {
-      return prediction.predictionStatus;
+      return prediction.status;
     });
   }
 

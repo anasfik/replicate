@@ -27,7 +27,7 @@ class PredictionStream {
   }
 
   bool _didPredictionStatusChanged(Prediction prediction) {
-    return previousPredictionStatus != prediction.predictionStatus;
+    return previousPredictionStatus != prediction.status;
   }
 
   void _setStatusForNextPolling(PredictionStatus predictionStatus) {
@@ -49,7 +49,7 @@ class PredictionStream {
           if (shouldTriggerOnlyStatusChanges) {
             if (_didPredictionStatusChanged(prediction)) {
               addPrediction(prediction);
-              _setStatusForNextPolling(prediction.predictionStatus);
+              _setStatusForNextPolling(prediction.status);
             }
           } else {
             addPrediction(prediction);

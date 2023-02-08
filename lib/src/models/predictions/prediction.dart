@@ -21,7 +21,7 @@ class Prediction {
   final DateTime createdAt;
   final DateTime? startedAt;
   final DateTime? completedAt;
-  final String status;
+  final PredictionStatus status;
   final Map<String, dynamic> input;
   final dynamic output;
   final String? error;
@@ -43,16 +43,16 @@ class Prediction {
     required this.metrics,
   });
 
-  PredictionStatus get predictionStatus {
+  static PredictionStatus _predictionStatus(String status) {
     return PredictionStatus.values.firstWhere(
-      (status) => status.name.toLowerCase() == this.status.toLowerCase(),
+      (statusEnum) => statusEnum.name.toLowerCase() == status.toLowerCase(),
     );
   }
 
   bool get isTerminated {
-    return predictionStatus == PredictionStatus.succeeded ||
-        predictionStatus == PredictionStatus.failed ||
-        predictionStatus == PredictionStatus.cancelled;
+    return status == PredictionStatus.succeeded ||
+        status == PredictionStatus.failed ||
+        status == PredictionStatus.cancelled;
   }
 
   factory Prediction.fromJson(Map<String, dynamic> json) {
@@ -67,7 +67,7 @@ class Prediction {
       completedAt: json['completed_at'] == null
           ? null
           : DateTime.parse(json['completed_at']),
-      status: json['status'],
+      status: _predictionStatus(json['status']),
       input: json['input'],
       output: json['output'],
       error: json['error'],

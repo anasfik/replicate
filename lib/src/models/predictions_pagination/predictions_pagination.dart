@@ -37,22 +37,22 @@ class PredictionsPagination {
         listEquals(other.results, results);
   }
 
-  bool hasNextPage() {
+  bool get hasNextPage {
     return nextApiUrl != null;
   }
 
-  bool hasPreviousPage() {
+  bool get hasPreviousPage {
     return previousApiUrl != null;
   }
 
-  Future<PredictionsPagination> previousPaginationList() async {
+  Future<PredictionsPagination> previous() async {
     assert(previousApiUrl != null, "No previous page exists for this list");
     return await Replicate.instance.predictions.listPredictionsFromApiLink(
       url: previousApiUrl!,
     );
   }
 
-  Future<PredictionsPagination> nextPaginationList() async {
+  Future<PredictionsPagination> next() async {
     assert(nextApiUrl != null, "No next page exists for this list");
     return await Replicate.instance.predictions.listPredictionsFromApiLink(
       url: nextApiUrl!,

@@ -12,7 +12,7 @@ A community-maintained Dart client package for Replicate.com, this package let y
 
 # Usage
 
-## Authentication
+### Authentication
 
 Before making any requests, you should set your API key so it will be used to make requests to your account on `Replicate.com`.
 
@@ -20,7 +20,9 @@ Before making any requests, you should set your API key so it will be used to ma
   Replicate.apiKey = "<YOUR_API_KEY>";
 ```
 
-###### **Recommendation**: it's better to load your api key from a `.env` file, you can do this in Dart using [dotenv](https://pub.dev/packages/dotenv) package.
+###### **Recommendation**:
+
+it's better to load your api key from a `.env` file, you can do this in Dart using [dotenv](https://pub.dev/packages/dotenv) package.
 
 <br>
 
@@ -71,6 +73,41 @@ You might want to give a quick look over [Get Prediction](https://replicate.com/
 
 <br>
 
+## Cancel Prediction
+
+You can cancel a running prediction by calling `Replicate.instance.predictions.cancel()` :
+
+```dart
+final canceledPrediction = await Replicate.instance.predictions.cancel(
+  id: "<PREDICTION_ID>",
+);
+```
+
+## Get list of predictions
+
+You can get a paginated list of predictions that you've created with your account by calling :
+
+```dart
+PredictionsPagination predictionsPageList = await Replicate.instance.predictions.list();
+
+print(predictionsPageList.results);
+```
+
+This includes predictions created from the API and the Replicate website. Returns 100 records per page.
+
+You can check before requesting the next/previous pagination lists:
+
+```dart
+if (predictionsPageList.hasNextPage) {
+  PredictionsPagination next = await predictionsPageList.next();
+  print(next.results);
+}
+if (predictionsPageList.hasPreviousPage) {
+  PredictionsPagination prev = await predictionsPageList.previous();
+  print(prev.results);
+}
+```
+
 ## Listening to prediction changes.
 
 After Creating a new prediction with [Create Prediction](#create_prediction), while it is running, you can get a `Stream` of its changes in real-time by calling:
@@ -88,7 +125,9 @@ predictionStream.listen((Prediction prediction) {
 
 By default, every time the status of the prediction changes, a new `Prediction` will be emitted to the `predictionStream`, but you can change and configure this behavior to meet your specific needs.
 
-### What if I don't want to listen to changes by `Stream`.
+<br>
+
+## I don't want to listen to changes by `Stream`.
 
 Well, Replicate.com offers also a webhook feature.
 

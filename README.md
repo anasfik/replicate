@@ -1,10 +1,9 @@
 # Replicate Dart Client
 
-This
+A community-maintained Dart client package for Replicate.com, this package let you interact with Replicate.com APIs and create predictions from the available machine learning models.
 
 ## Key Features:
 
--
 - Easy to call `Future` methods for creating, Getting, Cancelling one prediction, and getting a pagination list of predictions used.
 - `Stream` availability for listening to a prediction changes in realtime.
 - Dynamic inputs for the possibility to use any model available on Replicate.com flexibly.

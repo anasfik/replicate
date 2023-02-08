@@ -1,11 +1,15 @@
 import 'dart:async';
+import 'dart:developer';
+
+import 'package:replicate/src/utils/logger.dart';
 
 import '../../../models/predictions/prediction.dart';
 
 class PredictionStream {
   late final Timer timer;
-  PredictionStatus? previousPredictionStatus;
   final _controller = StreamController<Prediction>();
+
+  PredictionStatus? previousPredictionStatus;
 
   Stream<Prediction> get stream => _controller.stream;
 
@@ -22,10 +26,18 @@ class PredictionStream {
     timer.cancel();
   }
 
+  bool _didPredictionStatusChanged(Prediction prediction) {
+    return previousPredictionStatus != prediction.predictionStatus;
+  }
+
+  void _setStatusForNextPolling(PredictionStatus predictionStatus) {
+    previousPredictionStatus = predictionStatus;
+  }
+
   PredictionStream({
     required Future<Prediction> Function() pollingCallback,
     required Duration pollingInterval,
-    required bool triggerOnlyStatusChanges,
+    required bool shouldTriggerOnlyStatusChanges,
     required bool stopPollingRequestsOnPredictionTermination,
   }) {
     timer = Timer.periodic(
@@ -34,10 +46,10 @@ class PredictionStream {
         try {
           Prediction prediction = await pollingCallback();
 
-          if (triggerOnlyStatusChanges) {
-            if (previousPredictionStatus != prediction.predictionStatus) {
+          if (shouldTriggerOnlyStatusChanges) {
+            if (_didPredictionStatusChanged(prediction)) {
               addPrediction(prediction);
-              previousPredictionStatus = prediction.predictionStatus;
+              _setStatusForNextPolling(prediction.predictionStatus);
             }
           } else {
             addPrediction(prediction);
@@ -45,6 +57,7 @@ class PredictionStream {
 
           if (prediction.isTerminated) {
             if (stopPollingRequestsOnPredictionTermination) {
+              ReplicateLogger.logPredictionTermination(prediction.id);
               close();
             }
           }

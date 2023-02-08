@@ -74,7 +74,7 @@ class ReplicatePrediction implements ReplicatePredictionBase {
   Stream<Prediction> snapshots({
     required String id,
     Duration pollingInterval = const Duration(seconds: 3),
-    bool triggerOnlyStatusChanges = true,
+    bool shouldTriggerOnlyStatusChanges = true,
     bool stopPollingRequestsOnPredictionTermination = true,
   }) {
     if (_predictionsStreamRegistry.containsKey(id)) {
@@ -85,8 +85,9 @@ class ReplicatePrediction implements ReplicatePredictionBase {
           return await get(id: id);
         },
         pollingInterval: pollingInterval,
-        triggerOnlyStatusChanges: triggerOnlyStatusChanges,
-        stopPollingRequestsOnPredictionTermination: stopPollingRequestsOnPredictionTermination,
+        shouldTriggerOnlyStatusChanges: shouldTriggerOnlyStatusChanges,
+        stopPollingRequestsOnPredictionTermination:
+            stopPollingRequestsOnPredictionTermination,
       );
 
       _predictionsStreamRegistry[id] = predictionStream;
@@ -101,7 +102,7 @@ class ReplicatePrediction implements ReplicatePredictionBase {
     return snapshots(
       id: id,
       pollingInterval: pollingInterval,
-      triggerOnlyStatusChanges: true,
+      shouldTriggerOnlyStatusChanges: true,
     ).asyncMap<PredictionStatus>((prediction) {
       return prediction.predictionStatus;
     });
@@ -110,12 +111,12 @@ class ReplicatePrediction implements ReplicatePredictionBase {
   Stream<String> logsSnapshots({
     required String id,
     Duration pollingInterval = const Duration(seconds: 3),
-    bool triggerOnlyStatusChanges = true,
+    bool shouldTriggerOnlyStatusChanges = true,
   }) {
     return snapshots(
       id: id,
       pollingInterval: pollingInterval,
-      triggerOnlyStatusChanges: triggerOnlyStatusChanges,
+      shouldTriggerOnlyStatusChanges: shouldTriggerOnlyStatusChanges,
     ).asyncMap<String>((prediction) {
       return prediction.logs;
     });

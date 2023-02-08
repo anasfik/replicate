@@ -22,4 +22,8 @@ class ReplicateLogger {
   static void logRequestEnd(String url) {
     log("request from/to: $url end.");
   }
+
+  static void logPredictionTermination(String id) {
+    log("prediction with id: $id terminated, polling stopped.");
+  }
 }

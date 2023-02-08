@@ -1,4 +1,6 @@
-import 'pagination_prediction/urls.dart';
+import '../../predictions/prediction.dart';
+
+enum PredictionSource { api, web }
 
 class PaginationPrediction {
   final String id;
@@ -7,8 +9,8 @@ class PaginationPrediction {
   final DateTime createdAt;
   final DateTime? startedAt;
   final DateTime? completedAt;
-  final String source;
-  final String status;
+  final PredictionSource source;
+  final PredictionStatus status;
 
   PaginationPrediction({
     required this.id,
@@ -21,6 +23,18 @@ class PaginationPrediction {
     required this.status,
   });
 
+  static PredictionSource _predictionSource(String source) {
+    return PredictionSource.values.firstWhere(
+      (sourceEnum) => sourceEnum.name.toLowerCase() == source.toLowerCase(),
+    );
+  }
+
+  static PredictionStatus _predictionStatus(String status) {
+    return PredictionStatus.values.firstWhere(
+      (statusEnum) => statusEnum.name.toLowerCase() == status.toLowerCase(),
+    );
+  }
+
   factory PaginationPrediction.fromJson(Map<String, dynamic> json) {
     return PaginationPrediction(
       id: json['id'],
@@ -29,8 +43,8 @@ class PaginationPrediction {
       createdAt: DateTime.parse(json['created_at']),
       startedAt: DateTime.parse(json['started_at']),
       completedAt: DateTime.parse(json['completed_at']),
-      source: json['source'],
-      status: json['status'],
+      source: _predictionSource(json['source']),
+      status: _predictionStatus(json['status']),
     );
   }
 

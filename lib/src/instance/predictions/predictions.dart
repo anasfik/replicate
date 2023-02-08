@@ -68,25 +68,40 @@ class ReplicatePrediction implements ReplicatePredictionBase {
     );
   }
 
-  Map<String, PredictionStream> predictionsStreamRegistry = {};
+  Map<String, PredictionStream> _predictionsStreamRegistry = {};
 
   @override
   Stream<Prediction> snapshots({
     required String id,
     Duration pollingInterval = const Duration(seconds: 3),
+    bool triggerOnlyStatusChanges = true,
   }) {
-    if (predictionsStreamRegistry.containsKey(id)) {
-      return predictionsStreamRegistry[id]!.stream;
+    if (_predictionsStreamRegistry.containsKey(id)) {
+      return _predictionsStreamRegistry[id]!.stream;
     } else {
       final predictionStream = PredictionStream(
         pollingCallback: () async {
           return await get(id: id);
         },
         pollingInterval: pollingInterval,
+        triggerOnlyStatusChanges: triggerOnlyStatusChanges,
       );
 
-      predictionsStreamRegistry[id] = predictionStream;
+      _predictionsStreamRegistry[id] = predictionStream;
       return predictionStream.stream;
     }
+  }
+
+  Stream<PredictionStatus> statusSnapshots({
+    required String id,
+    Duration pollingInterval = const Duration(seconds: 3),
+  }) {
+    return snapshots(
+      id: id,
+      pollingInterval: pollingInterval,
+      triggerOnlyStatusChanges: true,
+    ).asyncMap<PredictionStatus>((prediction) {
+      return prediction.predictionStatus;
+    });
   }
 }

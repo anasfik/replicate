@@ -4,7 +4,7 @@ import '../../../models/predictions/prediction.dart';
 
 class PredictionStream {
   late final Timer timer;
-
+  PredictionStatus? previousPredictionStatus;
   final _controller = StreamController<Prediction>();
 
   Stream<Prediction> get stream => _controller.stream;
@@ -13,7 +13,7 @@ class PredictionStream {
     _controller.add(prediction);
   }
 
-  addError(Object error, [StackTrace? stackTrace]) {
+  void addError(Object error, [StackTrace? stackTrace]) {
     _controller.addError(error, stackTrace);
   }
 
@@ -25,13 +25,22 @@ class PredictionStream {
   PredictionStream({
     required Future<Prediction> Function() pollingCallback,
     required Duration pollingInterval,
+    required bool triggerOnlyStatusChanges,
   }) {
     timer = Timer.periodic(
       pollingInterval,
       (Timer timer) async {
         try {
           Prediction prediction = await pollingCallback();
-          addPrediction(prediction);
+
+          if (triggerOnlyStatusChanges) {
+            if (previousPredictionStatus != prediction.predictionStatus) {
+              addPrediction(prediction);
+              previousPredictionStatus = prediction.predictionStatus;
+            }
+          } else {
+            addPrediction(prediction);
+          }
         } catch (e) {
           addError(e);
         }

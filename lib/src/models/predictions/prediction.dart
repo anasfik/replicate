@@ -4,6 +4,14 @@ import 'sub_models/urls.dart';
 
 export 'sub_models/urls.dart';
 
+enum PredictionStatus {
+  starting,
+  processing,
+  succeeded,
+  failed,
+  cancelled,
+}
+
 @immutable
 class Prediction {
   final String id;
@@ -33,6 +41,12 @@ class Prediction {
     required this.logs,
     required this.metrics,
   });
+
+  PredictionStatus get predictionStatus {
+    return PredictionStatus.values.firstWhere(
+      (status) => status.name.toLowerCase() == this.status.toLowerCase(),
+    );
+  }
 
   factory Prediction.fromJson(Map<String, dynamic> json) {
     return Prediction(

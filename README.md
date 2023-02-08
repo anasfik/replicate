@@ -5,7 +5,7 @@ A community-maintained Dart client package for Replicate.com, this package let y
 ## Key Features:
 
 - Easy to call `Future` methods for creating, Getting, Cancelling one prediction, and getting a pagination list of predictions used.
-- `Stream` availability for listening to a prediction changes in realtime.
+- `Stream` availability for listening to a predictions changes in realtime.
 - Dynamic inputs for the possibility to use any model available on Replicate.com flexibly.
 - Wrappers around response fields, for a better developer experience.
 - Easy to configure, and set your settings using this library.
@@ -20,7 +20,9 @@ Before making any requests, you should set your API key so it will be used to ma
   Replicate.apiKey = "<YOUR_API_KEY>";
 ```
 
-Recommendation: it's better to load your api key from a `.env` file, you can do this in Dart using [dotenv](https://pub.dev/packages/dotenv) package.
+###### **Recommendation**: it's better to load your api key from a `.env` file, you can do this in Dart using [dotenv](https://pub.dev/packages/dotenv) package.
+
+<br>
 
 ## Create Prediction
 
@@ -41,6 +43,8 @@ Note that `input` takes a `Map<String, dynamic>` as a value since every model ha
 
 if you want to create a new prediction for a model that accepts a file field(s), you need just to set that field(s) value to a `File` object of your file when creating the `input` of the prediction.
 
+<br>
+
 ## Get Prediction
 
 if you need to get a Prediction at a specific point in time, you can call the `Replicate.instance.predictions.get()` method, it will return a new `Prediction` object with the requested prediction data:
@@ -55,8 +59,6 @@ print(prediction);
 
 A `Prediction` object is a container for prediction progress data (status, logs, output, metrics... ) requested from your `Replicate.com` dashboard.
 
-You might want to give a quick look over [Get Prediction](https://replicate.com/docs/reference/http#get-prediction).
-
 When a `Prediction` is Terminated, the `metrics` property will have a `predictTime` property with the amount of CPU or GPU time, in seconds, that this prediction used while running. This is the time you're billed for, and it doesn't include time waiting for the prediction to start.
 
 A `Prediction` is considered terminated when the `status` property is one of :
@@ -64,6 +66,10 @@ A `Prediction` is considered terminated when the `status` property is one of :
 - `PredictionStatus.succeeded`
 - `PredictionStatus.canceled`
 - `PredictionStatus.failed`
+
+You might want to give a quick look over [Get Prediction](https://replicate.com/docs/reference/http#get-prediction).
+
+<br>
 
 ## Listening to prediction changes.
 

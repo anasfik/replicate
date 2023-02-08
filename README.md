@@ -4,11 +4,13 @@ A community-maintained Dart client package for Replicate.com, this package let y
 
 ## Key Features:
 
-- Easy to call `Future` methods for creating, Getting, Cancelling one prediction, and getting a pagination list of predictions used.
+- Easy to call methods for creating, Getting, Cancelling one prediction, and getting a pagination lists of predictions used.
 - `Stream` availability for listening to a predictions changes in realtime.
 - Dynamic inputs for the possibility to use any model available on Replicate.com flexibly.
 - Wrappers around response fields, for a better developer experience.
 - Easy to configure, and set your settings using this library.
+
+# Full Documentation
 
 # Usage
 
@@ -83,6 +85,8 @@ final canceledPrediction = await Replicate.instance.predictions.cancel(
 );
 ```
 
+<br>
+
 ## Get list of predictions
 
 You can get a paginated list of predictions that you've created with your account by calling :
@@ -107,6 +111,8 @@ if (predictionsPageList.hasPreviousPage) {
   print(prev.results);
 }
 ```
+
+<br>
 
 ## Listening to prediction changes.
 
@@ -144,3 +150,4 @@ Prediction prediction = await Replicate.instance.predictions.create(
 ```
 
 learn more about the webhook feature [from here](https://replicate.com/docs/reference/http#create-prediction--webhook_completed)
+

@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:replicate/replicate.dart';
 import 'package:replicate/src/network/builder/headers.dart';
 
 import '../exceptions/replicate_exception.dart';

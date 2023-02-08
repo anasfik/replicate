@@ -1,6 +1,6 @@
 name: replicate
 description: A Dart client for Replicate.
-version: 1.0.0
+version: 0.2.0
 
 environment:
   sdk: ">=2.18.5 <3.0.0"

@@ -77,7 +77,9 @@ class ReplicatePrediction implements ReplicatePredictionBase {
     if (predictionsStreamRegistry.containsKey(id)) {
       return predictionsStreamRegistry[id]!.stream;
     } else {
-      final predictionStream = PredictionStream();
+      final predictionStream = PredictionStream(() async {
+        return await get(id: id);
+      });
 
       predictionsStreamRegistry[id] = predictionStream;
       return predictionStream.stream;

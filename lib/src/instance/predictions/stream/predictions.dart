@@ -3,19 +3,11 @@ import 'dart:async';
 import '../../../models/predictions/prediction.dart';
 
 class PredictionStream {
-  PredictionStream(Future<Prediction> Function() callback) {
-    final timer = Timer.periodic(
-      Duration(seconds: 3),
-      (Timer timer) {
-        callback().then(
-          (prediction) {
-            addPrediction(prediction);
-          },
-        );
-      },
-    );
-  }
+  late final Timer timer;
+
   final _controller = StreamController<Prediction>();
+
+  Stream<Prediction> get stream => _controller.stream;
 
   void addPrediction(Prediction prediction) {
     _controller.add(prediction);
@@ -25,9 +17,25 @@ class PredictionStream {
     _controller.addError(error, stackTrace);
   }
 
-  Stream<Prediction> get stream => _controller.stream;
-
   void close() {
     _controller.close();
+    timer.cancel();
+  }
+
+  PredictionStream({
+    required Future<Prediction> Function() pollingCallback,
+    required Duration pollingInterval,
+  }) {
+    timer = Timer.periodic(
+      pollingInterval,
+      (Timer timer) async {
+        try {
+          Prediction prediction = await pollingCallback();
+          addPrediction(prediction);
+        } catch (e) {
+          addError(e);
+        }
+      },
+    );
   }
 }

@@ -73,13 +73,17 @@ class ReplicatePrediction implements ReplicatePredictionBase {
   @override
   Stream<Prediction> snapshots({
     required String id,
+    Duration pollingInterval = const Duration(seconds: 3),
   }) {
     if (predictionsStreamRegistry.containsKey(id)) {
       return predictionsStreamRegistry[id]!.stream;
     } else {
-      final predictionStream = PredictionStream(() async {
-        return await get(id: id);
-      });
+      final predictionStream = PredictionStream(
+        pollingCallback: () async {
+          return await get(id: id);
+        },
+        pollingInterval: pollingInterval,
+      );
 
       predictionsStreamRegistry[id] = predictionStream;
       return predictionStream.stream;

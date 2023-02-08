@@ -1,3 +1,7 @@
+## 0.4.0
+
+- Added documentation for every single memebr related to predictions.
+
 ## 0.3.0
 
 - Added predictions pagination lists methods

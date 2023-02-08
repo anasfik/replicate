@@ -1,5 +1,5 @@
 name: replicate
-version: 0.3.0
+version: 0.4.0
 description: A community-maintained Dart client package for Replicate.com, this package let you interact with Replicate.com APIs and create predictions from the available machine learning models.
 repository: https://github.com/anasfik/replicate
 

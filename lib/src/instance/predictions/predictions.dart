@@ -7,9 +7,16 @@ import 'package:replicate/src/network/http_client.dart';
 import '../../base/predictions_base.dart';
 import '../../models/predictions_pagination/predictions_pagination.dart';
 
+/// This is the responsible member of the Replicate's predictions API, where you can call the methods to create, get, list and cancel predictions.
 class ReplicatePrediction implements ReplicatePredictionBase {
+  /// This is a registry of all the predictions streams that are used, so we can manage each one of them.
   final Map<String, PredictionStream> _predictionsStreamRegistry = {};
 
+  /// Cancels a prediction by it's id, this will stop the prediction from running.
+  /// Example:
+  /// ```dart
+  /// Replicate.instance.predictions.cancel(id: "prediction-id");
+  /// ```
   @override
   Future cancel({
     required String id,
@@ -22,6 +29,22 @@ class ReplicatePrediction implements ReplicatePredictionBase {
     );
   }
 
+  /// Creates a prediction, this will start the prediction process based on the model [version] and the [input] provided, then it will return a [Prediction] object.
+  ///
+  /// set [webhookCompleted] to a HTTPS URLS where you want to receive a webhook
+  /// when the prediction is completed.
+  ///
+  /// Example:
+  /// ```dart
+  /// Replicate.instance.predictions.create(
+  ///  version: "version-id",
+  /// input: {
+  ///  "image": "https://example.com/image.jpg"
+  /// },
+  /// webhookCompleted: "https://example.com/webhook"
+  /// );
+  /// ```
+  ///
   @override
   Future<Prediction> create({
     required String version,
@@ -41,6 +64,11 @@ class ReplicatePrediction implements ReplicatePredictionBase {
     );
   }
 
+  /// Gets a prediction by it's id, this will return a [Prediction] object.
+  /// Example:
+  /// ```dart
+  /// Replicate.instance.predictions.get(id: "prediction-id");
+  /// ```
   @override
   Future<Prediction> get({required String id}) async {
     return await ReplicateHttpClient.get(
@@ -51,6 +79,13 @@ class ReplicatePrediction implements ReplicatePredictionBase {
     );
   }
 
+  /// Lists all the predictions available from a specific API link, this will return a [PredictionsPagination] object.
+  ///
+  /// This is an internal method that is used to get a [PredictionsPagination] from the [list], [PredictionsPagination.next] and [PredictionsPagination.previous] methods.
+  /// Example:
+  /// ```dart
+  /// Replicate.instance.predictions.listPredictionsFromApiLink(url: "api-link");
+  /// ```
   @internal
   Future<PredictionsPagination> listPredictionsFromApiLink({
     required String url,
@@ -63,6 +98,36 @@ class ReplicatePrediction implements ReplicatePredictionBase {
     );
   }
 
+  /// Lists all  your created predictions in a paginated way, this will return a [PredictionsPagination] object.
+  ///
+  /// Each page contains 100 predictions at maximum.
+  ///
+  /// To request the next page prediction (if it exists), use [PredictionsPagination.next].
+  /// to request the previous page prediction (if it exists), use [PredictionsPagination.previous].
+  ///
+  /// Example with first page list:
+  /// ```dart
+  /// Replicate.instance.predictions.list();
+  /// ```
+  ///
+  /// Example with next pagination list:
+  /// ```dart
+  /// final predictions = await Replicate.instance.predictions.list();
+  /// if (predictions.hasNextPage) {
+  ///  final nextPredictions = await predictions.next();
+  /// }
+  ///
+  /// Example with previous pagination list:
+  /// ```
+  ///
+  /// Example with previous pagination list:
+  /// ```dart
+  /// final predictions = await Replicate.instance.predictions.list();
+  /// if (predictions.hasNextPage) {
+  ///  final nextPredictions = await predictions.next();
+  ///  final previousPredictions = await nextPredictions.previous();
+  /// }
+  /// ```
   @override
   Future<PredictionsPagination> list() async {
     return await listPredictionsFromApiLink(
@@ -70,6 +135,48 @@ class ReplicatePrediction implements ReplicatePredictionBase {
     );
   }
 
+  /// Gets a stream of a prediction updates by it's id, this will return a stream of the [Prediction] object.
+  /// This stream is based on polling, so it will poll the prediction status every [pollingInterval] seconds.
+  ///
+  /// by default, it will only trigger a new event if the prediction status changes, you can change this behavior by setting [shouldTriggerOnlyStatusChanges] to false.
+  ///
+  /// by default, it will stop polling the prediction status when the prediction is terminated, you can change this behavior by setting  [stopPollingRequestsOnPredictionTermination] to false.
+  ///
+  /// A prediction is considered terminated when it's status is [PredictionStatus.succeeded], [PredictionStatus.failed] or [PredictionStatus.cancelled].
+  ///
+  /// Example:
+  /// ```dart
+  /// Stream<Prediction> stream = Replicate.instance.predictions.snapshots(id: "prediction-id");
+  ///
+  /// stream.listen((prediction) {
+  /// print(prediction);
+  /// });
+  /// ```
+  ///
+  /// Example with custom polling interval:
+  /// ```dart
+  /// Stream<Prediction> stream = Replicate.instance.predictions.snapshots(
+  /// id: "prediction-id",
+  /// pollingInterval: const Duration(seconds: 5),
+  /// );
+  ///
+  /// stream.listen((prediction) {
+  /// print(prediction);
+  /// });
+  /// ```
+  ///
+  /// Example with custom polling interval and shouldTriggerOnlyStatusChanges set to false:
+  /// ```dart
+  /// Stream<Prediction> stream = Replicate.instance.predictions.snapshots(
+  /// id: "prediction-id",
+  /// pollingInterval: const Duration(seconds: 5),
+  /// shouldTriggerOnlyStatusChanges: false,
+  /// );
+  ///
+  /// stream.listen((prediction) {
+  /// print(prediction);
+  /// });
+  /// ```
   @override
   Stream<Prediction> snapshots({
     required String id,
@@ -95,6 +202,19 @@ class ReplicatePrediction implements ReplicatePredictionBase {
     }
   }
 
+  /// Gets a stream of a prediction status updates by it's id, this will return a stream of the [PredictionStatus] object.
+  ///
+  /// This stream is based on polling, so it will poll the prediction status every [pollingInterval] seconds.
+  ///
+  /// Example:
+  /// ```dart
+  /// Stream<PredictionStatus> statusStream = Replicate.instance.predictions.statusSnapshots(id: "prediction-id");
+  ///
+  /// statusStream.listen((status) {
+  ///  print(status);
+  /// });
+  /// ```
+
   Stream<PredictionStatus> statusSnapshots({
     required String id,
     Duration pollingInterval = const Duration(seconds: 3),
@@ -108,15 +228,61 @@ class ReplicatePrediction implements ReplicatePredictionBase {
     });
   }
 
+  /// Gets a stream of a prediction logs updates by it's id, this will return a stream of [String].
+  ///
+  /// This stream is based on polling, so it will poll the prediction status every [pollingInterval] seconds.
+  ///
+  /// by default, it will only trigger a new event if the prediction status changes, you can change this behavior by setting [shouldTriggerOnlyStatusChanges] to false.
+  ///
+  /// by default, it will stop polling the prediction status when the prediction is terminated, you can change this behavior by setting  [stopPollingRequestsOnPredictionTermination] to false.
+  ///
+  /// A prediction is considered terminated when it's status is [PredictionStatus.succeeded], [PredictionStatus.failed] or [PredictionStatus.cancelled].
+  ///
+  /// Example:
+  /// ```dart
+  /// Stream<String> logsStream = Replicate.instance.predictions.logsSnapshots(id: "prediction-id");
+  ///
+  /// logsStream.listen((logs) {
+  /// print(logs);
+  /// });
+  /// ```
+  ///
+  /// Example with custom polling interval:
+  /// ```dart
+  /// Stream<String> logsStream = Replicate.instance.predictions.logsSnapshots(
+  /// id: "prediction-id",
+  /// pollingInterval: const Duration(seconds: 5),
+  /// );
+  ///
+  /// logsStream.listen((logs) {
+  /// print(logs);
+  /// });
+  /// ```
+  ///
+  /// Example with custom polling interval and shouldTriggerOnlyStatusChanges set to false:
+  /// ```dart
+  /// Stream<String> logsStream = Replicate.instance.predictions.logsSnapshots(
+  /// id: "prediction-id",
+  /// pollingInterval: const Duration(seconds: 5),
+  /// shouldTriggerOnlyStatusChanges: false,
+  /// );
+  ///
+  /// logsStream.listen((logs) {
+  /// print(logs);
+  /// });
+  /// ```
   Stream<String> logsSnapshots({
     required String id,
     Duration pollingInterval = const Duration(seconds: 3),
-    bool shouldTriggerOnlyStatusChanges = true,
+    bool shouldTriggerOnlyStatusChanges = false,
+    bool stopPollingRequestsOnPredictionTermination = true,
   }) {
     return snapshots(
       id: id,
       pollingInterval: pollingInterval,
       shouldTriggerOnlyStatusChanges: shouldTriggerOnlyStatusChanges,
+      stopPollingRequestsOnPredictionTermination:
+          stopPollingRequestsOnPredictionTermination,
     ).asyncMap<String>((prediction) {
       return prediction.logs;
     });

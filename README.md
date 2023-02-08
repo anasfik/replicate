@@ -116,7 +116,7 @@ if (predictionsPageList.hasPreviousPage) {
 
 ## Listening to prediction changes.
 
-After Creating a new prediction with [Create Prediction](#create_prediction), while it is running, you can get a `Stream` of its changes in real-time by calling:
+After Creating a new prediction with [Create Prediction](#create-prediction), while it is running, you can get a `Stream` of its changes in real-time by calling:
 
 ```dart
 Stream<Prediction> predictionStream = Replicate.instance.predictions.snapshots(
@@ -137,7 +137,7 @@ By default, every time the status of the prediction changes, a new `Prediction` 
 
 Well, Replicate.com offers also a webhook feature.
 
-while [creating a prediction](#create_prediction), you can set the `webhookCompleted` property to your HTTPS URL which will receive the response when the prediction is completed:
+while [creating a prediction](#create-prediction), you can set the `webhookCompleted` property to your HTTPS URL which will receive the response when the prediction is completed:
 
 ```dart
 Prediction prediction = await Replicate.instance.predictions.create(
@@ -150,4 +150,3 @@ Prediction prediction = await Replicate.instance.predictions.create(
 ```
 
 learn more about the webhook feature [from here](https://replicate.com/docs/reference/http#create-prediction--webhook_completed)
-

@@ -8,6 +8,8 @@ import '../../base/predictions_base.dart';
 import '../../models/predictions_pagination/predictions_pagination.dart';
 
 class ReplicatePrediction implements ReplicatePredictionBase {
+  final Map<String, PredictionStream> _predictionsStreamRegistry = {};
+
   @override
   Future cancel({
     required String id,
@@ -68,8 +70,6 @@ class ReplicatePrediction implements ReplicatePredictionBase {
     );
   }
 
-  Map<String, PredictionStream> _predictionsStreamRegistry = {};
-
   @override
   Stream<Prediction> snapshots({
     required String id,
@@ -102,6 +102,20 @@ class ReplicatePrediction implements ReplicatePredictionBase {
       triggerOnlyStatusChanges: true,
     ).asyncMap<PredictionStatus>((prediction) {
       return prediction.predictionStatus;
+    });
+  }
+
+  Stream<String> logsSnapshots({
+    required String id,
+    Duration pollingInterval = const Duration(seconds: 3),
+    bool triggerOnlyStatusChanges = true,
+  }) {
+    return snapshots(
+      id: id,
+      pollingInterval: pollingInterval,
+      triggerOnlyStatusChanges: triggerOnlyStatusChanges,
+    ).asyncMap<String>((prediction) {
+      return prediction.logs;
     });
   }
 }

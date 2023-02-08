@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:meta/meta.dart';
+import 'sub_models/metrics.dart';
 import 'sub_models/urls.dart';
 
 export 'sub_models/urls.dart';
@@ -25,7 +26,7 @@ class Prediction {
   final dynamic output;
   final String? error;
   final String logs;
-  final Map<String, dynamic>? metrics;
+  final PredictionMetrics? metrics;
 
   const Prediction({
     required this.id,
@@ -48,6 +49,12 @@ class Prediction {
     );
   }
 
+  bool get isTerminated {
+    return predictionStatus == PredictionStatus.succeeded ||
+        predictionStatus == PredictionStatus.failed ||
+        predictionStatus == PredictionStatus.cancelled;
+  }
+
   factory Prediction.fromJson(Map<String, dynamic> json) {
     return Prediction(
       id: json['id'],
@@ -65,7 +72,7 @@ class Prediction {
       output: json['output'],
       error: json['error'],
       logs: json['logs'],
-      metrics: json['metrics'],
+      metrics: PredictionMetrics.fromJson(json['metrics']),
     );
   }
 

@@ -129,7 +129,7 @@ predictionStream.listen((Prediction prediction) {
 
 ```
 
-By default, every time the status of the prediction changes, a new `Prediction` will be emitted to the `predictionStream`, but you can change and configure this behavior to meet your specific needs.
+By default, every time the status of the prediction changes, a new `Prediction` will be emitted to the `predictionStream`, but you can change and configure this behavior to meet your specific needs by specifying a `pollingInterval`, `shouldTriggerOnlyStatusChanges`, `stopPollingRequestsOnPredictionTermination`..
 
 <br>
 

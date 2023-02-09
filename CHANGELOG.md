@@ -1,3 +1,9 @@
+## 0.4.5
+
+- Fixed issues
+- added more examples
+- added tests for all predictions methods
+
 ## 0.4.0
 
 - Added documentation for every single memebr related to predictions.

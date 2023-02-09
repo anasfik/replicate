@@ -12,7 +12,8 @@ class ReplicatePrediction implements ReplicatePredictionBase {
   /// This is a registry of all the predictions streams that are used, so we can manage each one of them.
   final Map<String, PredictionStream> _predictionsStreamRegistry = {};
 
-  /// Cancels a prediction by it's id, this will stop the prediction from running.
+  /// Cancels a prediction by it's [id], this will stop the prediction from running.
+  ///
   /// Example:
   /// ```dart
   /// Replicate.instance.predictions.cancel(id: "prediction-id");

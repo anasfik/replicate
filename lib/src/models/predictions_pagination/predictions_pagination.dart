@@ -1,6 +1,8 @@
 import 'package:collection/collection.dart';
-import 'package:replicate/replicate.dart';
-import 'sub_models/pagination_prediction.dart';
+import 'package:replicate/src/instance/predictions/predictions.dart';
+
+import 'predictions_pagination.dart';
+export 'sub_models/pagination_prediction.dart';
 
 class PredictionsPagination {
   final String? previousApiUrl;
@@ -47,14 +49,14 @@ class PredictionsPagination {
 
   Future<PredictionsPagination> previous() async {
     assert(previousApiUrl != null, "No previous page exists for this list");
-    return await Replicate.instance.predictions.listPredictionsFromApiLink(
+    return await ReplicatePrediction().listPredictionsFromApiLink(
       url: previousApiUrl!,
     );
   }
 
   Future<PredictionsPagination> next() async {
     assert(nextApiUrl != null, "No next page exists for this list");
-    return await Replicate.instance.predictions.listPredictionsFromApiLink(
+    return await ReplicatePrediction().listPredictionsFromApiLink(
       url: nextApiUrl!,
     );
   }

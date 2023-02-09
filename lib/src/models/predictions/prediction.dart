@@ -10,7 +10,7 @@ enum PredictionStatus {
   processing,
   succeeded,
   failed,
-  cancelled,
+  canceled,
 }
 
 @immutable
@@ -52,7 +52,7 @@ class Prediction {
   bool get isTerminated {
     return status == PredictionStatus.succeeded ||
         status == PredictionStatus.failed ||
-        status == PredictionStatus.cancelled;
+        status == PredictionStatus.canceled;
   }
 
   factory Prediction.fromJson(Map<String, dynamic> json) {

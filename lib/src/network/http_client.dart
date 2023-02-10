@@ -56,4 +56,31 @@ class ReplicateHttpClient {
       );
     }
   }
+
+  static Future<void> delete({
+    required void Function() onSuccess,
+    required String from,
+  }) async {
+    ReplicateLogger.logRequestStart(from);
+    final response = await http.delete(
+      Uri.parse(from),
+      headers: HeaderBuilder.build(),
+    );
+    ReplicateLogger.logRequestEnd(from);
+
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+
+    final error = decodedBody["error"];
+    final detail = decodedBody["detail"];
+    if (error == null && detail == null) {
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        return onSuccess();
+      }
+    } else {
+      throw ReplicateException(
+        message: error ?? detail ?? "Unknown error",
+        statsCode: response.statusCode,
+      );
+    }
+  }
 }

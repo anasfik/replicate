@@ -16,7 +16,11 @@ abstract class GetCollectionsModels {
 }
 
 abstract class DeleteModelVersion {
-  Future delete();
+  Future<void> delete({
+    required String modelOwner,
+    required String modelNme,
+    required String versionId,
+  });
 }
 
 abstract class GetModelVersion {

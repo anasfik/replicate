@@ -89,9 +89,17 @@ class ReplicateModels implements ReplicateModelsBase {
   }
 
   @override
-  Future delete() {
-    // TODO: implement delete
-    throw UnimplementedError();
+  Future<void> delete(
+      {required String modelOwner,
+      required String modelNme,
+      required String versionId}) async {
+    return await ReplicateHttpClient.delete(
+      from: EndpointUrlBuilder.build(
+          ["models", modelOwner, modelNme, "versions", versionId]),
+      onSuccess: () {
+        return;
+      },
+    );
   }
 
   @override

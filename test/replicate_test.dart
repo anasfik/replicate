@@ -132,6 +132,14 @@ void main() {
         expect(model, isA<PaginationModel>());
         expect(model.id, isA<String>());
       });
+      test("delete", () async {
+        await Replicate.instance.models.delete(
+          modelOwner: "replicate",
+          modelNme: "hello-world",
+          versionId:
+              "5c7d5dc6dd8bf75c1acaa8565735e7986bc5b66206b55cca93cb72c9bf15ccaa",
+        );
+      });
     });
   });
 }

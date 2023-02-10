@@ -1,5 +1,6 @@
 import 'package:meta/meta.dart';
 import 'package:replicate/src/models/paginated_models/paginated_models.dart';
+import 'package:replicate/src/models/paginated_models/sub_models/pagination_model.dart';
 import 'package:replicate/src/network/builder/endpoint_url.dart';
 import 'package:replicate/src/network/http_client.dart';
 
@@ -94,8 +95,17 @@ class ReplicateModels implements ReplicateModelsBase {
   }
 
   @override
-  Future version() {
-    // TODO: implement version
-    throw UnimplementedError();
+  Future<PaginationModel> version({
+    required String modelOwner,
+    required String modelNme,
+    required String versionId,
+  }) async {
+    return await ReplicateHttpClient.get<PaginationModel>(
+      from: EndpointUrlBuilder.build(
+          ["models", modelOwner, modelNme, "versions", versionId]),
+      onSuccess: (Map<String, dynamic> response) {
+        return PaginationModel.fromJson(response);
+      },
+    );
   }
 }

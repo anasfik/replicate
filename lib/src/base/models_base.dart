@@ -20,7 +20,11 @@ abstract class DeleteModelVersion {
 }
 
 abstract class GetModelVersion {
-  Future version();
+  Future version({
+    required String modelOwner,
+    required String modelNme,
+    required String versionId,
+  });
 }
 
 abstract class GetModelsVersions {

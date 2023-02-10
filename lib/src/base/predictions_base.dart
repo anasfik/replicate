@@ -27,7 +27,7 @@ abstract class GetPrediction {
 }
 
 abstract class ListPredictions {
-  Future<PredictionsPagination> list();
+  Future<PaginatedPredictions> list();
 }
 
 abstract class CreatePrediction {

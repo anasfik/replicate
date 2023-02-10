@@ -40,9 +40,9 @@ void main() {
       examplePredictionId = prediction.id;
     });
     test('list', () async {
-      PredictionsPagination list = await Replicate.instance.predictions.list();
+      PaginatedPredictions list = await Replicate.instance.predictions.list();
 
-      expect(list, isA<PredictionsPagination>());
+      expect(list, isA<PaginatedPredictions>());
       expect(list.results, isA<List<PaginationPrediction>>());
     });
 

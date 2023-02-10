@@ -1,3 +1,6 @@
+import '../models/model/model.dart';
+import '../models/model/paginated_models/paginated_models.dart';
+
 abstract class ReplicateModelsBase
     implements
         GetModel,
@@ -21,11 +24,14 @@ abstract class GetModelVersion {
 }
 
 abstract class GetModelsVersions {
-  Future<List> versions();
+  Future<PaginatedModels> versions({
+    required String modelOwner,
+    required String modelNme,
+  });
 }
 
 abstract class GetModel {
-  Future get({
+  Future<ReplicateModel> get({
     required String modelOwner,
     required String modelNme,
   });

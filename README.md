@@ -92,7 +92,7 @@ final canceledPrediction = await Replicate.instance.predictions.cancel(
 You can get a paginated list of predictions that you've created with your account by calling :
 
 ```dart
-PredictionsPagination predictionsPageList = await Replicate.instance.predictions.list();
+PaginatedPredictions predictionsPageList = await Replicate.instance.predictions.list();
 
 print(predictionsPageList.results);
 ```
@@ -103,11 +103,11 @@ You can check before requesting the next/previous pagination lists:
 
 ```dart
 if (predictionsPageList.hasNextPage) {
-  PredictionsPagination next = await predictionsPageList.next();
+  PaginatedPredictions next = await predictionsPageList.next();
   print(next.results);
 }
 if (predictionsPageList.hasPreviousPage) {
-  PredictionsPagination prev = await predictionsPageList.previous();
+  PaginatedPredictions prev = await predictionsPageList.previous();
   print(prev.results);
 }
 ```

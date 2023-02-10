@@ -89,57 +89,54 @@ void main() {
         id: prediction.id,
       );
     });
+  });
+  group("models", () {
+    test("get", () async {
+      ReplicateModel model = await Replicate.instance.models.get(
+        modelOwner: "replicate",
+        modelNme: "hello-world",
+      );
 
-    group("models", () {
-      // Replicate.apiKey = '<YOUR_API_KEY>';
-      Replicate.apiKey = '95b1d7bdebd1ac18e2552875cdef40529d599301';
+      expect(model, isA<ReplicateModel>());
+      expect(model.name, "hello-world");
+      expect(model.owner, "replicate");
+    });
+    test("list", () async {
+      PaginatedModels models = await Replicate.instance.models.versions(
+        modelOwner: "replicate",
+        modelNme: "hello-world",
+      );
 
-      test("get", () async {
-        ReplicateModel model = await Replicate.instance.models.get(
-          modelOwner: "replicate",
-          modelNme: "hello-world",
-        );
+      expect(models, isA<PaginatedModels>());
+      expect(models.results, isA<List<PaginationModel>>());
+      if (models.hasNextPage) {
+        expect(models.nextApiUrl, isNotNull);
+        expect(models.nextApiUrl, isA<String>());
 
-        expect(model, isA<ReplicateModel>());
-        expect(model.name, "hello-world");
-        expect(model.owner, "replicate");
-      });
-      test("list", () async {
-        PaginatedModels models = await Replicate.instance.models.versions(
-          modelOwner: "replicate",
-          modelNme: "hello-world",
-        );
+        PaginatedModels nextModels = await models.next();
+        expect(nextModels, isA<PaginatedModels>());
+        expect(nextModels.results, isA<List<PaginationModel>>());
+      }
+    });
+    test("get version", () async {
+      PaginationModel model = await Replicate.instance.models.version(
+        modelOwner: "replicate",
+        modelNme: "hello-world",
+        versionId:
+            "5c7d5dc6dd8bf75c1acaa8565735e7986bc5b66206b55cca93cb72c9bf15ccaa",
+      );
 
-        expect(models, isA<PaginatedModels>());
-        expect(models.results, isA<List<PaginationModel>>());
-        if (models.hasNextPage) {
-          expect(models.nextApiUrl, isNotNull);
-          expect(models.nextApiUrl, isA<String>());
+      expect(model, isA<PaginationModel>());
+      expect(model.id, isA<String>());
+    });
 
-          PaginatedModels nextModels = await models.next();
-          expect(nextModels, isA<PaginatedModels>());
-          expect(nextModels.results, isA<List<PaginationModel>>());
-        }
-      });
-      test("get version", () async {
-        PaginationModel model = await Replicate.instance.models.version(
-          modelOwner: "replicate",
-          modelNme: "hello-world",
-          versionId:
-              "5c7d5dc6dd8bf75c1acaa8565735e7986bc5b66206b55cca93cb72c9bf15ccaa",
-        );
-
-        expect(model, isA<PaginationModel>());
-        expect(model.id, isA<String>());
-      });
-      test("delete", () async {
-        await Replicate.instance.models.delete(
-          modelOwner: "replicate",
-          modelNme: "hello-world",
-          versionId:
-              "5c7d5dc6dd8bf75c1acaa8565735e7986bc5b66206b55cca93cb72c9bf15ccaa",
-        );
-      });
+    test("delete", () async {
+      // ! replace this parameters with your model's owner, name and version, so you can delete it.
+      await Replicate.instance.models.delete(
+        modelOwner: "/* OWNER */",
+        modelNme: "/* NAME */",
+        versionId: "/* YOUR VERSION */",
+      );
     });
   });
 }

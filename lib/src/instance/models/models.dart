@@ -88,6 +88,27 @@ class ReplicateModels implements ReplicateModelsBase {
     throw UnimplementedError();
   }
 
+  /// Deletes an owned model version, based on it's owner and name.
+  /// if you want to get a specific version, use [version].
+  /// if you want to get a list of versions, use [versions].
+  ///
+  ///
+  /// [modelOwner] is the username of the model owner.
+  ///
+  ///
+  /// [modelNme] is the name of the model.
+  ///
+  ///
+  /// [versionId] is the id of the version.
+  ///
+  ///
+  /// ```dart
+  /// await Replicate.instance.models.delete(
+  ///  modelOwner: "/* Owner */",
+  ///  modelNme: "/* Model Name */",
+  ///  versionId: "/* Version Id */",
+  /// );
+  /// ```
   @override
   Future<void> delete(
       {required String modelOwner,
@@ -102,6 +123,29 @@ class ReplicateModels implements ReplicateModelsBase {
     );
   }
 
+  /// Gets a single model version, based on it's owner, name, and version id, and returns it as a [PaginationModel].
+  ///
+  /// if you want to get a list of versions, use [versions].
+  ///
+  ///
+  /// [modelOwner] is the username of the model owner.
+  ///
+  ///
+  /// [modelNme] is the name of the model.
+  ///
+  ///
+  /// [versionId] is the id of the version.
+  ///
+  ///
+  /// ```dart
+  /// PaginationModel modelVersion = await Replicate.instance.models.version(
+  ///  modelOwner: "replicate",
+  ///  modelNme: "hello-world",
+  ///  versionId: "5c7d5dc6dd8bf75c1acaa8565735e7986bc5b66206b55cca93cb72c9bf15ccaa",
+  /// );
+  ///
+  /// print(modelVersion.id); // ...
+  /// ```
   @override
   Future<PaginationModel> version({
     required String modelOwner,

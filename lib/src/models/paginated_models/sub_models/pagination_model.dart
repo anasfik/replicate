@@ -2,13 +2,13 @@ class PaginationModel {
   String? id;
   String? createdAt;
   String? cogVersion;
-  String? openapiSchema;
+  Map<String, dynamic>? openApiSchema;
 
   PaginationModel({
     this.id,
     this.createdAt,
     this.cogVersion,
-    this.openapiSchema,
+    this.openApiSchema,
   });
 
   factory PaginationModel.fromJson(Map<String, dynamic> json) {
@@ -16,7 +16,7 @@ class PaginationModel {
       id: json['id'],
       createdAt: json['created_at'],
       cogVersion: json['cog_version'],
-      openapiSchema: json['openapi_schema'],
+      openApiSchema: json['openapi_schema'],
     );
   }
 }

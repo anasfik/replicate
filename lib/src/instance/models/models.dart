@@ -1,5 +1,5 @@
 import 'package:meta/meta.dart';
-import 'package:replicate/src/models/model/paginated_models/paginated_models.dart';
+import 'package:replicate/src/models/paginated_models/paginated_models.dart';
 import 'package:replicate/src/network/builder/endpoint_url.dart';
 import 'package:replicate/src/network/http_client.dart';
 
@@ -16,7 +16,7 @@ class ReplicateModels implements ReplicateModelsBase {
   /// [modelNme] is the name of the model.
   ///
   /// ```dart
-  /// ReplicateModel model = await ReplicateModels().get(
+  /// ReplicateModel model = await Replicate.instance.models.get(
   ///  modelOwner: "replicate",
   /// modelNme: "hello-world",
   /// );

@@ -1,6 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:replicate/replicate.dart';
-import '../../../instance/models/models.dart';
+import '../../instance/models/models.dart';
 import 'sub_models/pagination_model.dart';
 
 /// This class lets you get a  paginated list of models, with the ability to fetch the next and previous pages if they exist.

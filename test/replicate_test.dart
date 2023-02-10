@@ -1,4 +1,5 @@
 import 'package:replicate/replicate.dart';
+import 'package:replicate/src/models/paginated_models/sub_models/pagination_model.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -87,6 +88,39 @@ void main() {
       await Replicate.instance.predictions.cancel(
         id: prediction.id,
       );
+    });
+
+    group("models", () {
+      // Replicate.apiKey = '<YOUR_API_KEY>';
+      Replicate.apiKey = '95b1d7bdebd1ac18e2552875cdef40529d599301';
+
+      test("get", () async {
+        ReplicateModel model = await Replicate.instance.models.get(
+          modelOwner: "replicate",
+          modelNme: "hello-world",
+        );
+
+        expect(model, isA<ReplicateModel>());
+        expect(model.name, "hello-world");
+        expect(model.owner, "replicate");
+      });
+      test("list", () async {
+        PaginatedModels models = await Replicate.instance.models.versions(
+          modelOwner: "replicate",
+          modelNme: "hello-world",
+        );
+
+        expect(models, isA<PaginatedModels>());
+        expect(models.results, isA<List<PaginationModel>>());
+        if (models.hasNextPage) {
+          expect(models.nextApiUrl, isNotNull);
+          expect(models.nextApiUrl, isA<String>());
+
+          PaginatedModels nextModels = await models.next();
+          expect(nextModels, isA<PaginatedModels>());
+          expect(nextModels.results, isA<List<PaginationModel>>());
+        }
+      });
     });
   });
 }

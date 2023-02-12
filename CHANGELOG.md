@@ -1,3 +1,10 @@
+## 0.7.5
+
+- Added models methods.
+- Added more documentation.
+- Fixed types issue.
+- Improved developer experience with methods.
+
 ## 0.4.5
 
 - Fixed issues

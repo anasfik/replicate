@@ -149,4 +149,75 @@ Prediction prediction = await Replicate.instance.predictions.create(
   );
 ```
 
-learn more about the webhook feature [from here](https://replicate.com/docs/reference/http#create-prediction--webhook_completed)
+learn more about the webhook feature [from here](https://replicate.com/docs/reference/http#create-prediction--webhook_comple
+
+## Get Model
+
+Gets a single model, based on it's owner and name, and returns it as a [ReplicateModel].
+
+```dart
+ReplicateModel model = await Replicate.instance.models.get(
+  modelOwner: "replicate",
+  modelNme: "hello-world",
+);
+
+print(model);
+print(model.url);
+print(model.owner);
+```
+
+## Get a list of model versions
+
+Gets a model's versions as a paginated list, based on it's owner and name.
+
+if you want to get a specific version, check [Get A Model Version](#get-a-model-version).
+
+You can load the next and previous pagination list of a current on, by using `next()` and `previous()` method.
+
+if no next or previous pages exists for a pagination list, a `NoNextPageException` or `NoPreviousPageException` will be thrown.
+
+For avoiding those exceptions at all, you can check for the next and previos pages existence using the `hasNextPage` and `hasPreviousPage` :
+
+```dart
+PaginatedModels modelVersions = await Replicate.instance.model.versions(
+ modelOwner: "replicate",
+ modelNme: "hello-world",
+);
+
+print(modelVersions.results); // ...
+
+// loads the next page if it exists
+if (modelVersions.hasNextPage) {
+ PaginatedModels nextPage = await modelVersions.next();
+
+ print(nextPage.results); // ...
+}
+```
+
+## Get A Model Version
+
+Gets a single model version, based on it's owner, name, and version id.
+
+if you want to get a list of versions, check [Get a list of model versions](#get-a-list-of-model-versions).
+
+```dart
+PaginationModel modelVersion = await Replicate.instance.models.version(
+ modelOwner: "replicate",
+ modelNme: "hello-world",
+ versionId: "5c7d5dc6dd8bf75c1acaa8565735e7986bc5b66206b55cca93cb72c9bf15ccaa",
+);
+
+print(modelVersion.id); // ...
+```
+
+## Delete A Model.
+
+Delete a model version and all associated predictions, including all output files.
+
+```dart
+await Replicate.instance.models.delete(
+ modelOwner: "/* Owner */",
+ modelNme: "/* Model Name */",
+ versionId: "/* Version Id */",
+);
+```

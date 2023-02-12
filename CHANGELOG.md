@@ -1,3 +1,8 @@
+## 0.8.5
+
+- Fixed Issues.
+- Added documentation for README.me
+
 ## 0.7.5
 
 - Added models methods.

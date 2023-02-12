@@ -12,6 +12,8 @@ A community-maintained Dart client package for Replicate.com, this package let y
 
 # Full Documentation
 
+You can check the Full Documentation of this library [from here](https://pub.dev/documentation/replicate/latest/).
+
 # Usage
 
 ### Authentication
@@ -151,6 +153,8 @@ Prediction prediction = await Replicate.instance.predictions.create(
 
 learn more about the webhook feature [from here](https://replicate.com/docs/reference/http#create-prediction--webhook_comple
 
+<br>
+
 ## Get Model
 
 Gets a single model, based on it's owner and name, and returns it as a [ReplicateModel].
@@ -165,6 +169,8 @@ print(model);
 print(model.url);
 print(model.owner);
 ```
+
+<br>
 
 ## Get a list of model versions
 
@@ -194,6 +200,8 @@ if (modelVersions.hasNextPage) {
 }
 ```
 
+<br>
+
 ## Get A Model Version
 
 Gets a single model version, based on it's owner, name, and version id.
@@ -209,6 +217,8 @@ PaginationModel modelVersion = await Replicate.instance.models.version(
 
 print(modelVersion.id); // ...
 ```
+
+<br>
 
 ## Delete A Model.
 

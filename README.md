@@ -2,7 +2,7 @@
 
 A community-maintained Dart client package for Replicate.com, this package let you interact with Replicate.com APIs and create predictions from the available machine learning models.
 
-## Key Features:
+## Key Features.
 
 - Easy to call methods for creating, Getting, Cancelling one prediction, and getting a pagination lists of predictions used.
 - `Stream` availability for listening to a predictions changes in realtime.
@@ -126,7 +126,7 @@ Stream<Prediction> predictionStream = Replicate.instance.predictions.snapshots(
 );
 
 predictionStream.listen((Prediction prediction) {
-   print(prediction.status);
+   print(prediction.status); // ...
 });
 
 ```
@@ -153,7 +153,7 @@ Prediction prediction = await Replicate.instance.predictions.create(
   );
 ```
 
-learn more about the webhook feature [from here](https://replicate.com/docs/reference/http#create-prediction--webhook_comple
+learn more about the webhook feature [from here](https://replicate.com/docs/reference/http#create-prediction--webhook_comple)
 
 <br>
 
@@ -167,9 +167,9 @@ ReplicateModel model = await Replicate.instance.models.get(
   modelNme: "hello-world",
 );
 
-print(model);
-print(model.url);
-print(model.owner);
+print(model);  // ...
+print(model.url);  // ...
+print(model.owner); // replicate
 ```
 
 <br>
@@ -236,6 +236,8 @@ await Replicate.instance.models.delete(
 
 if the file os deleted succefully, nothing will happen actually, so you should expect that the model is deleted if none happens in your code, However, when something goes wrong ( if you try to delete a model which you don't own, a `ReplicateException` will be thrown with the error message ).
 
+<br>
+
 ## Get a collection of models.
 
 Loads a collection of models.
@@ -249,9 +251,13 @@ collectionSlug: "super-resolution",
   print(collection.models); // ...
 ```
 
+<br>
+
 # Error Handling
 
-# ReplicateException
+<br>
+
+### ReplicateException
 
 This exception will be thrown when there is an error from the replicate.com end, as example when you hit the rate limit you will get a `ReplicateException` with the message and the status code of the erorr:
 
@@ -263,7 +269,9 @@ print(e.message);
 print(e.statusCode);
 }
 
-# NoNextPageException and NoPreviousPageException
+<br>
+
+### NoNextPageException and NoPreviousPageException
 
 These are special and limited exception when working with [Get A List Of Model Versions](#get-a-list-of-model-versions), when you try to get the `next()` or `previous()` of a pagintaed list that don't exist, one of those exceptions will be thrown, but the way to avoid them totally are included in the documentation.
 

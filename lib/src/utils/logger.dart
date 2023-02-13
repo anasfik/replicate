@@ -26,4 +26,8 @@ class ReplicateLogger {
   static void logPredictionTermination(String id) {
     log("prediction with id: $id terminated, polling stopped.");
   }
+
+  static void logRequestPayload(String to, Map<String, dynamic> body) {
+    log("request payload to: $to, body: $body.");
+  }
 }

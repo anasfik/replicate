@@ -45,7 +45,6 @@ class ReplicatePrediction implements ReplicatePredictionBase {
   /// webhookCompleted: "https://example.com/webhook"
   /// );
   /// ```
-  ///
   @override
   Future<Prediction> create({
     required String version,

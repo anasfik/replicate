@@ -45,9 +45,7 @@ Prediction prediction = await Replicate.instance.predictions.create(
 
 Note that `input` takes a `Map<String, dynamic>` as a value since every model has its input accepted fields.
 
-#### Experimental:
-
-if you want to create a new prediction for a model that accepts a file field(s), you need just to set that field(s) value to a `File` object of your file when creating the `input` of the prediction.
+if you want to create a new prediction for a model that accepts a file field(s), you need just to set that field(s) value to either a network url for that file, or the base64 of that file.
 
 <br>
 

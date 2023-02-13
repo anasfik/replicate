@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:replicate/src/network/builder/headers.dart';
 
@@ -6,6 +7,8 @@ import '../exceptions/replicate_exception.dart';
 import '../utils/logger.dart';
 
 import 'package:http/http.dart' as http;
+
+import 'package:path/path.dart';
 
 class ReplicateHttpClient {
   static Future<T> get<T>({

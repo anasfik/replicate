@@ -1,3 +1,10 @@
+## 1.0.0
+
+- Added the rest of models methods.
+- Added documentation and clarification
+- Figured the way of sending requests with files
+- Fixed the delete method issue resulting of returning nothin, with documenting the behavior of the library of it.
+
 ## 0.9.5
 
 - Added implementation of getting collection.

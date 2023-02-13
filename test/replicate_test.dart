@@ -14,7 +14,7 @@ void main() {
     });
 
     test('with setting a key', () {
-      Replicate.apiKey = '95b1d7bdebd1ac18e2552875cdef40529d599301';
+      Replicate.apiKey = '<YOUR_API_KEY>';
       try {
         Replicate.instance;
         expect(Replicate.instance, isA<Replicate>());

@@ -60,7 +60,7 @@ Prediction prediction = await Replicate.instance.predictions.get(
     id: "<PREDICTION_ID>",
 );
 
-print(prediction);
+print(prediction); // ...
 ```
 
 A `Prediction` object is a container for prediction progress data (status, logs, output, metrics... ) requested from your `Replicate.com` dashboard.
@@ -96,7 +96,7 @@ You can get a paginated list of predictions that you've created with your accoun
 ```dart
 PaginatedPredictions predictionsPageList = await Replicate.instance.predictions.list();
 
-print(predictionsPageList.results);
+print(predictionsPageList.results); // ...
 ```
 
 This includes predictions created from the API and the Replicate website. Returns 100 records per page.
@@ -106,11 +106,11 @@ You can check before requesting the next/previous pagination lists:
 ```dart
 if (predictionsPageList.hasNextPage) {
   PaginatedPredictions next = await predictionsPageList.next();
-  print(next.results);
+  print(next.results); // ...
 }
 if (predictionsPageList.hasPreviousPage) {
   PaginatedPredictions prev = await predictionsPageList.previous();
-  print(prev.results);
+  print(prev.results); // ...
 }
 ```
 
@@ -247,7 +247,7 @@ ModelsCollection collection = await Replicate.instance.models.collection(
 collectionSlug: "super-resolution",
 );
 
-  print(collection.name); // super resolution.
+  print(collection.name); // super resolution
   print(collection.models); // ...
 ```
 
@@ -261,6 +261,7 @@ collectionSlug: "super-resolution",
 
 This exception will be thrown when there is an error from the replicate.com end, as example when you hit the rate limit you will get a `ReplicateException` with the message and the status code of the erorr:
 
+```dart
 try {
 // ...
 
@@ -268,6 +269,7 @@ try {
 print(e.message);
 print(e.statusCode);
 }
+```
 
 <br>
 
@@ -275,6 +277,7 @@ print(e.statusCode);
 
 These are special and limited exception when working with [Get A List Of Model Versions](#get-a-list-of-model-versions), when you try to get the `next()` or `previous()` of a pagintaed list that don't exist, one of those exceptions will be thrown, but the way to avoid them totally are included in the documentation.
 
+```dart
 try {
 PaginatedModels firstPage = // ...
 page.previous(); // obviously, there is no previous for first page, right?
@@ -282,3 +285,4 @@ page.previous(); // obviously, there is no previous for first page, right?
 } on NoPreviousPageException catch(e) {
 print(// no next for this paginated list.);
 }
+```

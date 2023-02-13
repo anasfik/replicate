@@ -273,7 +273,7 @@ print(e.statusCode);
 
 <br>
 
-### NoNextPageException and NoPreviousPageException
+### NoNextPageException, NoPreviousPageException
 
 These are special and limited exception when working with [Get A List Of Model Versions](#get-a-list-of-model-versions), when you try to get the `next()` or `previous()` of a pagintaed list that don't exist, one of those exceptions will be thrown, but the way to avoid them totally are included in the documentation.
 

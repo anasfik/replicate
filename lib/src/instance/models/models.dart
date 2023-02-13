@@ -5,6 +5,7 @@ import 'package:replicate/src/network/builder/endpoint_url.dart';
 import 'package:replicate/src/network/http_client.dart';
 
 import '../../base/models_base.dart';
+import '../../models/collection/collection.dart';
 import '../../models/model/model.dart';
 
 class ReplicateModels implements ReplicateModelsBase {
@@ -80,12 +81,31 @@ class ReplicateModels implements ReplicateModelsBase {
     );
   }
 
+  /// Loads a Collection of models, based on it's slug.
+  /// if you want to get a specific model, use [get].
+  /// if you want to get a paginated list of models, use [list].
+  /// if you want to get a model's versions, use [versions].
+  /// if you want to get a specific version, use [version].
+  ///
+  /// [collectionSlug] is the slug of the collection.
+  ///
+  /// ```dart
+  /// final collection = await Replicate.instance.models.collection(
+  /// collectionSlug: "super-resolution",
+  /// );
+  ///
+  /// print(collection.models); // ...
+  /// ```
   @override
-  Future<List> collection({
+  Future<ModelsCollection> collection({
     required String collectionSlug,
-  }) {
-    // TODO: implement collection
-    throw UnimplementedError();
+  }) async {
+    return await ReplicateHttpClient.get(
+      from: EndpointUrlBuilder.build(["collections", collectionSlug]),
+      onSuccess: (Map<String, dynamic> response) {
+        return ModelsCollection.fromJson(response);
+      },
+    );
   }
 
   /// Deletes an owned model version, based on it's owner and name.

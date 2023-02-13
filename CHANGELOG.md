@@ -1,3 +1,8 @@
+## 0.9.5
+
+- Added implementation of getting collection.
+- Added more documentation.
+
 ## 0.8.5
 
 - Fixed Issues.

@@ -133,11 +133,13 @@ predictionStream.listen((Prediction prediction) {
 
 By default, every time the status of the prediction changes, a new `Prediction` will be emitted to the `predictionStream`, but you can change and configure this behavior to meet your specific needs by specifying a `pollingInterval`, `shouldTriggerOnlyStatusChanges`, `stopPollingRequestsOnPredictionTermination`..
 
+This functionality is based on polling request as it's recommended by [replicate from here](https://replicate.com/docs/reference/http#create-prediction).
+
 <br>
 
 ## I don't want to listen to changes by `Stream`.
 
-Well, Replicate.com offers also a webhook feature.
+Well, Replicate.com offers also notifying with webhook feature.
 
 while [creating a prediction](#create-prediction), you can set the `webhookCompleted` property to your HTTPS URL which will receive the response when the prediction is completed:
 
@@ -231,3 +233,44 @@ await Replicate.instance.models.delete(
  versionId: "/* Version Id */",
 );
 ```
+
+if the file os deleted succefully, nothing will happen actually, so you should expect that the model is deleted if none happens in your code, However, when something goes wrong ( if you try to delete a model which you don't own, a `ReplicateException` will be thrown with the error message ).
+
+## Get a collection of models.
+
+Loads a collection of models.
+
+```dart
+ModelsCollection collection = await Replicate.instance.models.collection(
+collectionSlug: "super-resolution",
+);
+
+  print(collection.name); // super resolution.
+  print(collection.models); // ...
+```
+
+# Error Handling
+
+# ReplicateException
+
+This exception will be thrown when there is an error from the replicate.com end, as example when you hit the rate limit you will get a `ReplicateException` with the message and the status code of the erorr:
+
+try {
+// ...
+
+} on ReplicateException carch(e) {
+print(e.message);
+print(e.statusCode);
+}
+
+# NoNextPageException and NoPreviousPageException
+
+These are special and limited exception when working with [Get A List Of Model Versions](#get-a-list-of-model-versions), when you try to get the `next()` or `previous()` of a pagintaed list that don't exist, one of those exceptions will be thrown, but the way to avoid them totally are included in the documentation.
+
+try {
+PaginatedModels firstPage = // ...
+page.previous(); // obviously, there is no previous for first page, right?
+
+} on NoPreviousPageException catch(e) {
+print(// no next for this paginated list.);
+}

@@ -1,3 +1,4 @@
+import '../models/collection/collection.dart';
 import '../models/model/model.dart';
 import '../models/paginated_models/paginated_models.dart';
 
@@ -10,7 +11,7 @@ abstract class ReplicateModelsBase
         GetCollectionsModels {}
 
 abstract class GetCollectionsModels {
-  Future<List> collection({
+  Future<ModelsCollection> collection({
     required String collectionSlug,
   });
 }

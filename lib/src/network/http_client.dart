@@ -71,7 +71,9 @@ class ReplicateHttpClient {
     );
     ReplicateLogger.logRequestEnd(from);
 
-    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    final decodedBody = response.body.isEmpty
+        ? {}
+        : jsonDecode(response.body) as Map<String, dynamic>;
 
     final error = decodedBody["error"];
     final detail = decodedBody["detail"];

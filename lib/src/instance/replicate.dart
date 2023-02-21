@@ -9,7 +9,6 @@ class Replicate {
   /// This is an internal api key that is used to make requests to the Replicate API, can be set only with it's setter.
   static String? _internalApiKey;
 
-
   /// The api key that is used to make requests to the Replicate API, you can only set it's value.
   /// Example:
   /// ```dart

@@ -279,14 +279,16 @@ class ReplicatePrediction implements ReplicatePredictionBase {
     bool shouldTriggerOnlyStatusChanges = false,
     bool stopPollingRequestsOnPredictionTermination = true,
   }) {
-    return snapshots(
-      id: id,
-      pollingInterval: pollingInterval,
-      shouldTriggerOnlyStatusChanges: shouldTriggerOnlyStatusChanges,
-      stopPollingRequestsOnPredictionTermination:
-          stopPollingRequestsOnPredictionTermination,
-    ).asyncMap<String>((prediction) {
-      return prediction.logs;
-    });
+    return Stream.empty();
+
+    // return snapshots(
+    // id: id,
+    // pollingInterval: pollingInterval,
+    // shouldTriggerOnlyStatusChanges: shouldTriggerOnlyStatusChanges,
+    // stopPollingRequestsOnPredictionTermination:
+    // stopPollingRequestsOnPredictionTermination,
+    // ).asyncMap<String>((prediction) {
+    // return prediction.logs;
+    // });
   }
 }

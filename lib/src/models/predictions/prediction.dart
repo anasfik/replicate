@@ -13,7 +13,7 @@ class Prediction extends Equatable {
   final DateTime createdAt;
   final Map<String, dynamic> input;
   final String? error;
-  final String logs;
+  final String? logs;
   final String model;
 
   const Prediction({

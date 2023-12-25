@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:replicate/src/instance/predictions/predictions.dart';
+import 'package:replicate/src/models/predictions/fetched_prediction.dart';
 
 import '../../exceptions/no_next_page_exception.dart';
 import '../../exceptions/no_previous_page_exception.dart';
@@ -9,7 +10,7 @@ export 'sub_models/pagination_prediction.dart';
 class PaginatedPredictions {
   final String? previousApiUrl;
   final String? nextApiUrl;
-  final List<PaginationPrediction> results;
+  final List<FetchedPrediction> results;
 
   PaginatedPredictions({
     this.previousApiUrl,
@@ -22,7 +23,7 @@ class PaginatedPredictions {
       previousApiUrl: json['previous'],
       nextApiUrl: json['next'],
       results: (json['results'] as List)
-          .map((e) => PaginationPrediction.fromJson(e))
+          .map((e) => FetchedPrediction.fromJson(e))
           .toList(),
     );
   }

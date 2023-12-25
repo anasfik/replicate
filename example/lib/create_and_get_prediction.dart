@@ -18,6 +18,12 @@ void main() async {
   );
 
   print(firstPrediction.createdAt);
+
+  // Waiting for 2 seconds.
+  await Future.delayed(Duration(seconds: 2), () {
+    print("Waited 2 seconds.");
+  });
+
   // if the prediction id created successfully, you should be able to check it in your replicate dashboard.
   //
   // you can get the prediction with it's id.
@@ -26,5 +32,5 @@ void main() async {
   );
 
   // printing the status of the prediction, at this point.
-  print(firstPredictionWithId.status);
+  print(firstPredictionWithId);
 }

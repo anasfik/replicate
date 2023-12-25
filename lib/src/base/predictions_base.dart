@@ -34,5 +34,7 @@ abstract class CreatePrediction {
   Future<Prediction> create({
     required String version,
     required Map<String, dynamic> input,
+    String? webhook,
+    List<String>? webhookEventsFilter,
   });
 }

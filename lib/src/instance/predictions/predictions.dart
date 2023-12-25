@@ -6,11 +6,12 @@ import 'package:replicate/src/network/http_client.dart';
 
 import '../../base/predictions_base.dart';
 import '../../models/paginated_predictions/predictions_pagination.dart';
+import '../../models/predictions/fetched_prediction.dart';
 
 /// This is the responsible member of the Replicate's predictions API, where you can call the methods to create, get, list and cancel predictions.
 class ReplicatePrediction implements ReplicatePredictionBase {
   /// This is a registry of all the predictions streams that are used, so we can manage each one of them.
-  final Map<String, PredictionStream> _predictionsStreamRegistry = {};
+  // final Map<String, PredictionStream> _predictionsStreamRegistry = {};
 
   /// Cancels a prediction by it's [id], this will stop the prediction from running.
   ///
@@ -49,14 +50,14 @@ class ReplicatePrediction implements ReplicatePredictionBase {
   Future<Prediction> create({
     required String version,
     required Map<String, dynamic> input,
-    String? webhookCompleted,
+    String? webhook,
+    List<String>? webhookEventsFilter,
   }) {
     return ReplicateHttpClient.post(
       to: EndpointUrlBuilder.build(['predictions']),
       body: {
         'version': version,
         'input': input,
-        if (webhookCompleted != null) "webhook_completed": webhookCompleted,
       },
       onSuccess: (Map<String, dynamic> response) {
         return Prediction.fromJson(response);
@@ -70,11 +71,11 @@ class ReplicatePrediction implements ReplicatePredictionBase {
   /// Replicate.instance.predictions.get(id: "prediction-id");
   /// ```
   @override
-  Future<Prediction> get({required String id}) async {
+  Future<FetchedPrediction> get({required String id}) async {
     return await ReplicateHttpClient.get(
       from: EndpointUrlBuilder.build(['predictions', id]),
       onSuccess: (Map<String, dynamic> response) {
-        return Prediction.fromJson(response);
+        return FetchedPrediction.fromJson(response);
       },
     );
   }
@@ -184,22 +185,23 @@ class ReplicatePrediction implements ReplicatePredictionBase {
     bool shouldTriggerOnlyStatusChanges = true,
     bool stopPollingRequestsOnPredictionTermination = true,
   }) {
-    if (_predictionsStreamRegistry.containsKey(id)) {
-      return _predictionsStreamRegistry[id]!.stream;
-    } else {
-      final predictionStream = PredictionStream(
-        pollingCallback: () async {
-          return await get(id: id);
-        },
-        pollingInterval: pollingInterval,
-        shouldTriggerOnlyStatusChanges: shouldTriggerOnlyStatusChanges,
-        stopPollingRequestsOnPredictionTermination:
-            stopPollingRequestsOnPredictionTermination,
-      );
+    return Stream.empty();
+    // if (_predictionsStreamRegistry.containsKey(id)) {
+    //   return _predictionsStreamRegistry[id]!.stream;
+    // } else {
+    //   final predictionStream = PredictionStream(
+    //     pollingCallback: () async {
+    //       return await get(id: id);
+    //     },
+    //     pollingInterval: pollingInterval,
+    //     shouldTriggerOnlyStatusChanges: shouldTriggerOnlyStatusChanges,
+    //     stopPollingRequestsOnPredictionTermination:
+    //         stopPollingRequestsOnPredictionTermination,
+    //   );
 
-      _predictionsStreamRegistry[id] = predictionStream;
-      return predictionStream.stream;
-    }
+    //   _predictionsStreamRegistry[id] = predictionStream;
+    //   return predictionStream.stream;
+    // }
   }
 
   /// Gets a stream of a prediction status updates by it's id, this will return a stream of the [PredictionStatus] object.
@@ -215,18 +217,18 @@ class ReplicatePrediction implements ReplicatePredictionBase {
   /// });
   /// ```
 
-  Stream<PredictionStatus> statusSnapshots({
-    required String id,
-    Duration pollingInterval = const Duration(seconds: 3),
-  }) {
-    return snapshots(
-      id: id,
-      pollingInterval: pollingInterval,
-      shouldTriggerOnlyStatusChanges: true,
-    ).asyncMap<PredictionStatus>((prediction) {
-      return prediction.status;
-    });
-  }
+  // Stream<PredictionStatus> statusSnapshots({
+  //   required String id,
+  //   Duration pollingInterval = const Duration(seconds: 3),
+  // }) {
+  //   return snapshots(
+  //     id: id,
+  //     pollingInterval: pollingInterval,
+  //     shouldTriggerOnlyStatusChanges: true,
+  //   ).asyncMap<PredictionStatus>((prediction) {
+  //     return prediction.status;
+  //   });
+  // }
 
   /// Gets a stream of a prediction logs updates by it's id, this will return a stream of [String].
   ///

@@ -1,3 +1,4 @@
+import '../../../utils/enum.dart';
 import '../../predictions/prediction.dart';
 
 enum PredictionSource { api, web }
@@ -29,12 +30,6 @@ class PaginationPrediction {
     );
   }
 
-  static PredictionStatus _predictionStatus(String status) {
-    return PredictionStatus.values.firstWhere(
-      (statusEnum) => statusEnum.name.toLowerCase() == status.toLowerCase(),
-    );
-  }
-
   factory PaginationPrediction.fromJson(Map<String, dynamic> json) {
     return PaginationPrediction(
       id: json['id'],
@@ -44,7 +39,7 @@ class PaginationPrediction {
       startedAt: DateTime.parse(json['started_at']),
       completedAt: DateTime.parse(json['completed_at']),
       source: _predictionSource(json['source']),
-      status: _predictionStatus(json['status']),
+      status: PredictionStatus.fromResponseField(json['status']),
     );
   }
 

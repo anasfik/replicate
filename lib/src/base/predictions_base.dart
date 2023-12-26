@@ -4,7 +4,6 @@ abstract class ReplicatePredictionBase
     implements
         CreatePrediction,
         CreatePredictionStream,
-        ListPredictions,
         GetPrediction,
         CancelPrediction {}
 
@@ -24,10 +23,6 @@ abstract class GetPrediction {
   Future<Prediction> get({
     required String id,
   });
-}
-
-abstract class ListPredictions {
-  Future<PaginatedPredictions> list();
 }
 
 abstract class CreatePrediction {

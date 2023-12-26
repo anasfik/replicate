@@ -1,6 +1,5 @@
 import '../models/collection/collection.dart';
 import '../models/model/model.dart';
-import '../models/paginated_models/paginated_models.dart';
 
 abstract class ReplicateModelsBase
     implements
@@ -19,7 +18,7 @@ abstract class GetCollectionsModels {
 abstract class DeleteModelVersion {
   Future<void> delete({
     required String modelOwner,
-    required String modelNme,
+    required String modelName,
     required String versionId,
   });
 }
@@ -27,16 +26,16 @@ abstract class DeleteModelVersion {
 abstract class GetModelVersion {
   Future version({
     required String modelOwner,
-    required String modelNme,
+    required String modelName,
     required String versionId,
   });
 }
 
 abstract class GetModelsVersions {
-  Future<PaginatedModels> versions({
-    required String modelOwner,
-    required String modelNme,
-  });
+  // Future<PaginatedModels> versions({
+  //   required String modelOwner,
+  //   required String modelNme,
+  // });
 }
 
 abstract class GetModel {

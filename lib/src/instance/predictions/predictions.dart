@@ -5,7 +5,6 @@ import 'package:replicate/src/network/builder/endpoint_url.dart';
 import 'package:replicate/src/network/http_client.dart';
 
 import '../../base/predictions_base.dart';
-import '../../models/paginated_predictions/predictions_pagination.dart';
 import '../../models/predictions/fetched_prediction.dart';
 
 /// This is the responsible member of the Replicate's predictions API, where you can call the methods to create, get, list and cancel predictions.
@@ -77,62 +76,6 @@ class ReplicatePrediction implements ReplicatePredictionBase {
       onSuccess: (Map<String, dynamic> response) {
         return FetchedPrediction.fromJson(response);
       },
-    );
-  }
-
-  /// Lists all the predictions available from a specific API link, this will return a [PaginatedPredictions] object.
-  ///
-  /// This is an internal method that is used to get a [PaginatedPredictions] from the [list], [PaginatedPredictions.next] and [PaginatedPredictions.previous] methods.
-  /// Example:
-  /// ```dart
-  /// Replicate.instance.predictions.listPredictionsFromApiLink(url: "api-link");
-  /// ```
-  @internal
-  Future<PaginatedPredictions> listPredictionsFromApiLink({
-    required String url,
-  }) async {
-    return await ReplicateHttpClient.get(
-      from: url,
-      onSuccess: (Map<String, dynamic> response) {
-        return PaginatedPredictions.fromJson(response);
-      },
-    );
-  }
-
-  /// Lists all  your created predictions in a paginated way, this will return a [PaginatedPredictions] object.
-  ///
-  /// Each page contains 100 predictions at maximum.
-  ///
-  /// To request the next page prediction (if it exists), use [PaginatedPredictions.next].
-  /// to request the previous page prediction (if it exists), use [PaginatedPredictions.previous].
-  ///
-  /// Example with first page list:
-  /// ```dart
-  /// Replicate.instance.predictions.list();
-  /// ```
-  ///
-  /// Example with next pagination list:
-  /// ```dart
-  /// final predictions = await Replicate.instance.predictions.list();
-  /// if (predictions.hasNextPage) {
-  ///  final nextPredictions = await predictions.next();
-  /// }
-  ///
-  /// Example with previous pagination list:
-  /// ```
-  ///
-  /// Example with previous pagination list:
-  /// ```dart
-  /// final predictions = await Replicate.instance.predictions.list();
-  /// if (predictions.hasNextPage) {
-  ///  final nextPredictions = await predictions.next();
-  ///  final previousPredictions = await nextPredictions.previous();
-  /// }
-  /// ```
-  @override
-  Future<PaginatedPredictions> list() async {
-    return await listPredictionsFromApiLink(
-      url: EndpointUrlBuilder.build(['predictions']),
     );
   }
 

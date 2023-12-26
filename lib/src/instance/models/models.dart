@@ -1,12 +1,11 @@
 import 'package:meta/meta.dart';
-import 'package:replicate/src/models/paginated_models/paginated_models.dart';
-import 'package:replicate/src/models/paginated_models/sub_models/pagination_model.dart';
 import 'package:replicate/src/network/builder/endpoint_url.dart';
 import 'package:replicate/src/network/http_client.dart';
 
 import '../../base/models_base.dart';
 import '../../models/collection/collection.dart';
 import '../../models/model/model.dart';
+import '../../models/model/version.dart';
 
 class ReplicateModels implements ReplicateModelsBase {
   /// Gets a single model, based on it's owner and name, and returns it as a [ReplicateModel].
@@ -36,20 +35,6 @@ class ReplicateModels implements ReplicateModelsBase {
         });
   }
 
-  /// Gets a paginated list of models, based on an api link.
-  ///
-  /// [apiUrl] is the api link to get the models from.
-  @internal
-  @protected
-  Future<PaginatedModels> listModelsFromApiLink(String apiUrl) async {
-    return await ReplicateHttpClient.get<PaginatedModels>(
-      from: apiUrl,
-      onSuccess: (Map<String, dynamic> response) {
-        return PaginatedModels.fromJson(response);
-      },
-    );
-  }
-
   /// Gets a model's versions as a paginated list, based on it's owner and name.
   /// if you want to get a specific version, use [version].
   ///
@@ -71,15 +56,15 @@ class ReplicateModels implements ReplicateModelsBase {
   ///  print(nextPage.results);
   /// }
   /// ```
-  @override
-  Future<PaginatedModels> versions({
-    required String modelOwner,
-    required String modelNme,
-  }) async {
-    return await listModelsFromApiLink(
-      EndpointUrlBuilder.build(["models", modelOwner, modelNme, "versions"]),
-    );
-  }
+  // @override
+  // Future<PaginatedModels> versions({
+  //   required String modelOwner,
+  //   required String modelNme,
+  // }) async {
+  //   return await listModelsFromApiLink(
+  //     EndpointUrlBuilder.build(["models", modelOwner, modelNme, "versions"]),
+  //   );
+  // }
 
   /// Loads a Collection of models, based on it's slug.
   /// if you want to get a specific model, use [get].
@@ -132,11 +117,11 @@ class ReplicateModels implements ReplicateModelsBase {
   @override
   Future<void> delete(
       {required String modelOwner,
-      required String modelNme,
+      required String modelName,
       required String versionId}) async {
     return await ReplicateHttpClient.delete(
       from: EndpointUrlBuilder.build(
-          ["models", modelOwner, modelNme, "versions", versionId]),
+          ["models", modelOwner, modelName, "versions", versionId]),
       onSuccess: () {
         return;
       },
@@ -167,16 +152,16 @@ class ReplicateModels implements ReplicateModelsBase {
   /// print(modelVersion.id); // ...
   /// ```
   @override
-  Future<PaginationModel> version({
+  Future<ReplicateModelVersion> version({
     required String modelOwner,
-    required String modelNme,
+    required String modelName,
     required String versionId,
   }) async {
-    return await ReplicateHttpClient.get<PaginationModel>(
+    return await ReplicateHttpClient.get<ReplicateModelVersion>(
       from: EndpointUrlBuilder.build(
-          ["models", modelOwner, modelNme, "versions", versionId]),
+          ["models", modelOwner, modelName, "versions", versionId]),
       onSuccess: (Map<String, dynamic> response) {
-        return PaginationModel.fromJson(response);
+        return ReplicateModelVersion.fromJson(response);
       },
     );
   }

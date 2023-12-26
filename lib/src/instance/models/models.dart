@@ -27,10 +27,10 @@ class ReplicateModels implements ReplicateModelsBase {
   @override
   Future<ReplicateModel> get({
     required String modelOwner,
-    required String modelNme,
+    required String modelName,
   }) async {
     return await ReplicateHttpClient.get<ReplicateModel>(
-        from: EndpointUrlBuilder.build(["models", modelOwner, modelNme]),
+        from: EndpointUrlBuilder.build(["models", modelOwner, modelName]),
         onSuccess: (Map<String, dynamic> response) {
           return ReplicateModel.fromJson(response);
         });

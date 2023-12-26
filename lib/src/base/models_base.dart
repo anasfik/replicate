@@ -42,6 +42,6 @@ abstract class GetModelsVersions {
 abstract class GetModel {
   Future<ReplicateModel> get({
     required String modelOwner,
-    required String modelNme,
+    required String modelName,
   });
 }
